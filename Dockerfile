@@ -1,6 +1,6 @@
-FROM haskell:8.0
+FROM ubuntu:xenial
 
-ENV PANDOC_VERSION "1.19.2.1"
+ENV PANDOC_VERSION "2.1.2"
 
 # install latex packages
 RUN apt-get update -y && \
@@ -12,14 +12,17 @@ RUN apt-get update -y && \
       texlive-fonts-extra \
       texlive-bibtex-extra \
       fontconfig \
-      python-pip \
-      lmodern && \
-    cabal update && cabal install pandoc-${PANDOC_VERSION} && \
-    pip install pandoc-img-glob && \
+      python-pip python-setuptools \
+      lmodern \
+      wget && \
+    mkdir -p /tmp/ && \
+    wget https://github.com/jgm/pandoc/releases/download/${PANDOC_VERSION}/pandoc-${PANDOC_VERSION}-1-amd64.deb --no-check-certificate -O /tmp/pandoc.deb && \
+    dpkg -i /tmp/pandoc.deb && rm -rf /tmp/pandoc.deb && \
+    pip install -U pip setuptools && pip install pandoc-img-glob==0.1.3 \
     apt-get clean autoclean && apt-get autoremove --yes && rm -rf /var/lib/{apt,dpkg,cache,log}/
    
 WORKDIR /source
 
-ENTRYPOINT ["/root/.cabal/bin/pandoc"]
+ENTRYPOINT ["/usr/bin/pandoc"]
 
 CMD ["--help"]
