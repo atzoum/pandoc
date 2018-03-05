@@ -18,10 +18,6 @@ RUN apt-get update -y && \
     pip install pandoc-img-glob && \
     apt-get clean autoclean && apt-get autoremove --yes && rm -rf /var/lib/{apt,dpkg,cache,log}/
    
-
-# install pandoc
-RUN cabal update && cabal install pandoc-${PANDOC_VERSION}
-
 WORKDIR /source
 
 ENTRYPOINT ["/root/.cabal/bin/pandoc"]
