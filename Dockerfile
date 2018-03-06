@@ -1,6 +1,6 @@
 FROM ubuntu:xenial
 
-ENV PANDOC_VERSION "1.19.2.4"
+ENV PANDOC_VERSION "1.19.2.1"
 
 # install latex packages
 RUN apt-get update -y && \
