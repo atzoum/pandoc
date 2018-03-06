@@ -12,7 +12,7 @@ RUN apt-get update -y && \
       texlive-fonts-extra \
       texlive-bibtex-extra \
       fontconfig \
-      python-pip python-setuptools \
+      python3 python3-pip python3-setuptools \
       lmodern \
       wget \
       locales && \
@@ -20,6 +20,8 @@ RUN apt-get update -y && \
     mkdir -p /tmp/ && \
     wget -q https://github.com/jgm/pandoc/releases/download/${PANDOC_VERSION}/pandoc-${PANDOC_VERSION}-1-amd64.deb --no-check-certificate -O /tmp/pandoc.deb && \
     dpkg -i /tmp/pandoc.deb && rm -rf /tmp/pandoc.deb && \
+    update-alternatives --install /usr/bin/python python /usr/bin/python3 100 && \
+    update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 100 && \
     pip install -U pip setuptools && \
     pip install panflute && \
     pip install pandoc-img-glob && \
