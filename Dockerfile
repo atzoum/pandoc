@@ -14,13 +14,17 @@ RUN apt-get update -y && \
       fontconfig \
       python-pip python-setuptools \
       lmodern \
-      wget && \
+      wget \
+      locales && \
+    locale-gen en_US.UTF-8 &&\
     mkdir -p /tmp/ && \
-    wget https://github.com/jgm/pandoc/releases/download/${PANDOC_VERSION}/pandoc-${PANDOC_VERSION}-1-amd64.deb --no-check-certificate -O /tmp/pandoc.deb && \
+    wget -q https://github.com/jgm/pandoc/releases/download/${PANDOC_VERSION}/pandoc-${PANDOC_VERSION}-1-amd64.deb --no-check-certificate -O /tmp/pandoc.deb && \
     dpkg -i /tmp/pandoc.deb && rm -rf /tmp/pandoc.deb && \
-    pip install -U pip setuptools && pip install panflute && pip install pandoc-img-glob &&\
+    pip install -U pip setuptools && \
+    pip install panflute && \
+    pip install pandoc-img-glob && \
     apt-get clean autoclean && apt-get autoremove --yes && rm -rf /var/lib/{apt,dpkg,cache,log}/
-   
+ENV LANG=en_US.UTF-8
 WORKDIR /source
 
 ENTRYPOINT ["/usr/bin/pandoc"]
