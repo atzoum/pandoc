@@ -1,6 +1,6 @@
 FROM ubuntu:xenial
 
-ENV PANDOC_VERSION "1.19.2.1"
+ENV PANDOC_VERSION "2.1.2"
 
 # install latex packages
 RUN apt-get update -y && \
@@ -15,10 +15,12 @@ RUN apt-get update -y && \
       python3 python3-pip python3-setuptools \
       lmodern \
       wget \
-      locales && \
+      locales \
+      groovy2 && \
     locale-gen en_US.UTF-8 && \
     mkdir -p /tmp/ && \
     wget https://github.com/jgm/pandoc/releases/download/${PANDOC_VERSION}/pandoc-${PANDOC_VERSION}-1-amd64.deb --no-check-certificate -O /tmp/pandoc.deb && \
+    wget https://github.com/dfrommi/groovy-pandoc/releases/download/v0.8/GroovyPandoc-0.8.jar -O /usr/share/groovy2/lib/groovy-pandoc.jar && \
     dpkg -i /tmp/pandoc.deb && rm -rf /tmp/pandoc.deb && \
     update-alternatives --install /usr/bin/python python /usr/bin/python3 100 && \
     update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 100 && \
